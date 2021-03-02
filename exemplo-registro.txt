@@ -1,0 +1,58 @@
+pragma solidity ^0.5.1;
+pragma experimental ABIEncoderV2;
+
+contract Basic {
+
+    address public proprietario;
+    
+    struct Registro {
+        string teste1;
+        string teste2;
+        string teste3;
+        uint timestamp;
+    }
+
+    mapping (string => Registro) private Registros;
+
+    uint public contador = 0;
+
+    constructor() public {
+        proprietario = msg.sender;
+    }
+    
+    function incluirRegistro(
+        string memory _id,
+        string memory _teste1, 
+        string memory _teste2, 
+        string memory _teste3
+        ) public returns (string memory) {
+        require(msg.sender == proprietario, "Error: apenas o proprietario do contrato pode executar essa função");
+        Registros[_id] = Registro(
+            _teste1,
+            _teste2,
+            _teste3, 
+            now);
+        contador = contador + 1; 
+        return "SUCESSO: Registro Incluído!";
+    }
+    
+    function recuperarRegistro(string memory _id) public view returns ( string memory, string memory, string memory, uint) {
+        return (
+                Registros[_id].teste1, 
+                Registros[_id].teste2, 
+                Registros[_id].teste3, 
+                Registros[_id].timestamp
+            );
+    }
+
+
+    function numExec() public view returns (uint) {
+        return contador;        
+    }
+
+    function mudarProprietario(address novoProprietario) public returns (string memory) {
+        if (msg.sender != proprietario) return "ERRO: Somente o proprietário pode executar essa função!";
+        proprietario = novoProprietario;
+        return "SUCESSO: Proprietário alterado!";
+    }
+}
