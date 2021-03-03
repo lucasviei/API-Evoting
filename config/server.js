@@ -6,7 +6,7 @@ const server = express();
 var timeout = require('connect-timeout');
 const blockchain = require("./blockchain");
 
-//Comment
+//Comment 2
 server.use(bodyParser.urlencoded({ extended:true }));
 server.use(bodyParser.json());
 server.use(cors());
